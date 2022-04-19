@@ -1,0 +1,7 @@
+node/error/*
+node/output/*
+node_modules
+.spotdl-cache
+*.spotdlTrackingFile
+ffmpeg-5.0-amd64-static
+ffmpeg-release-amd64-static
