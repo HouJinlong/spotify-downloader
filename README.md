@@ -24,12 +24,17 @@ UserScript.js 油猴子脚本
 ## 问题
 ### 腾讯云服务器翻墙
 
+#### v2raya
+
 > 使用[v2raya](https://v2raya.org/docs/prologue/installation/debian/)解决
 
 1. 导入节点，选择 启动 https://v2raya.org/docs/prologue/quick-start/
 
 2. 设置代理所有流量
 
+#### ShellClash
+
+> 旧vpn过期新vpn bywa不支持v2raya改用 https://github.com/juewuy/ShellClash
 
 ### FFmpeg安装4.2+(这步可跳过，之间使用下载的FFmpeg就行)
 
