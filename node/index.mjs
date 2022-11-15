@@ -21,7 +21,7 @@ const has = (id)=>{
     if(fs.existsSync(`./output/${id}.mp3`)){
         return {
             status:1,
-            url:`【自己的服务】/file/${id}.mp3`
+            url:`http://82.156.51.38:10092/file/${id}.mp3`
         }
     }else if(fs.existsSync(`./error/${id}`)){
         return {
@@ -61,7 +61,7 @@ router.get('/spotify/status', (ctx) => {
 });
 
 app.use(router.routes()).use(router.allowedMethods());
-// 静态服务录音文件 【自己的服务】/file/
+// 静态服务录音文件 http://82.156.51.38:10092/file/
 app.use(serve({rootDir: './output',rootPath: '/file'}))
 app.listen(10092, () => {
     console.log(`HTTPS Server is running on: https://localhost:${10092}`)
