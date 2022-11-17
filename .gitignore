@@ -1,5 +1,3 @@
-node/error/*
-node/output/*
 node_modules
 .spotdl-cache
 *.spotdlTrackingFile

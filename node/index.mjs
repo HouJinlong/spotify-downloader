@@ -7,7 +7,7 @@ import koaBody from 'koa-body';
 import serve from 'koa-static-server';
 const router = koaRouter()
 const app = new koa()
-
+const DOMAIN = process.env.DOMAIN
 app.use(cors({
     // allowHeaders: ['X-Authorization'],
   }));
@@ -21,7 +21,7 @@ const has = (id)=>{
     if(fs.existsSync(`./output/${id}.mp3`)){
         return {
             status:1,
-            url:`http://82.156.51.38:10092/file/${id}.mp3`
+            url:`${DOMAIN}/file/${id}.mp3`
         }
     }else if(fs.existsSync(`./error/${id}`)){
         return {
@@ -61,9 +61,9 @@ router.get('/spotify/status', (ctx) => {
 });
 
 app.use(router.routes()).use(router.allowedMethods());
-// 静态服务录音文件 http://82.156.51.38:10092/file/
+// 静态服务录音文件 ${DOMAIN}/file/
 app.use(serve({rootDir: './output',rootPath: '/file'}))
-app.listen(10092, () => {
-    console.log(`HTTPS Server is running on: https://localhost:${10092}`)
+app.listen(process.env.PORT, () => {
+    console.log(`HTTPS Server is running on: ${process.env.DOMAIN}`)
 })
   

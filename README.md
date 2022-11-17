@@ -4,11 +4,15 @@
 
 核心：使用[spotDL](https://github.com/spotDL/spotify-downloader) 解析 spotify 基础信息，然后 去youtube 查找视频，FFmpeg 处理出音频
 
-使用：
-1. 部署 服务器脚本
-2. 替换【自己的服务】
-3. [参考脚本使用](./spotify%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8.md)
-
+## 部署
+1. 安装 [spotDL](https://github.com/spotDL/spotify-downloader) 
+2. 解压 ffmpeg-release-amd64-static.tar.xz 在同级目录  并把最后解压文件名称改为  ffmpeg-5.0-amd64-static
+3. pm2.config.js 修改 DOMAIN 和 PORT
+    1. PORT 服务端口
+    2. DOMAIN 访问该服务的域名或者ip端口
+4. 安装nvm 使用node v16.18.0 安装 pm2 
+5. 在node目录下， pm2 restart pm2.config.js  启动服务
+6. [参考脚本使用](./spotify%E8%84%9A%E6%9C%AC%E4%BD%BF%E7%94%A8.md)
 ## 文件说明
 
 ```
