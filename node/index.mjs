@@ -58,7 +58,7 @@ router.get('/spotify/start', (ctx) => {
 });
 // spotify + youtube
 router.post('/youtube/start', (ctx) => {
-    const {id,spotify,youtube} = ctx.request.body
+    const {id,spotify,youtube} = JSON.parse(ctx.request.body)
     const {status} = has(id)
     if(status===0&&!tempMap[id]){
         tempMap[id] = true

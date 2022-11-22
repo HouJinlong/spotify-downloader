@@ -3,3 +3,5 @@ node_modules
 *.spotdlTrackingFile
 ffmpeg-5.0-amd64-static
 ffmpeg-release-amd64-static
+node/error/*
+node/output/*
