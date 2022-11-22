@@ -89,4 +89,15 @@ app.use(serve({rootDir: './html',rootPath: '/'}))
 app.listen(process.env.PORT, () => {
     console.log(`HTTPS Server is running on: ${process.env.DOMAIN}`)
 })
-  
+
+execa("spotdl",[`"https://www.youtube.com/watch?v=ShKXKORUWuE|https://open.spotify.com/track/1qEmFfgcLObUfQm0j1W2CK"`,'--use-youtube','--ffmpeg','../ffmpeg-5.0-amd64-static/ffmpeg','--path-template',`./output/ShKXKORUWuE.{ext}`]).then(result =>{
+    if(result.stdout.indexOf('Done')!==-1){
+        console.log(new Date(),'成功')
+    }else{
+        fs.writeFileSync(`./error/${id}`,result.stdout)
+    }
+    delete tempMap[id]
+}).catch(err=>{
+    delete tempMap[id]
+    fs.writeFileSync(`./error/${id}`,err.toString())
+});
