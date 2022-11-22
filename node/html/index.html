@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body{
+            padding-top: 100px;
+        }
+        img{
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+        .box{
+            width: 600px;
+            margin: 0 auto;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 2px #ccc;
+            padding: 10px 10px 30px;
+            word-break: break-all;
+        }
+        .input{
+            display: flex;
+            flex-direction: column;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        input{
+            width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            height: 40px;
+            outline: 0;
+        }
+        button{
+            font-size: 14px;
+            width: 80px;
+            height: 40px;
+            cursor: pointer;
+            margin: 0 auto;
+            display: block;
+        }
+        .border{
+            border-top: 1px solid #ccc;
+        }
+        .start{
+            display: none;
+        }
+        .doing{
+            display: none;
+            text-align: center;
+        }
+        .end{
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="start">
+            <div class="input">
+                <div>spotify:</div>
+                <input type="text" id="spotify"  placeholder="https://open.spotify.com/track/1qEmFfgcLObUfQm0j1W2CK">
+            </div>
+            <div class="input">
+                <div>youtube:</div>
+                <input type="text" id="youtube"  placeholder="https://www.youtube.com/watch?v=ShKXKORUWuE">
+            </div>
+            <button id="button">爬取歌曲</button>
+        </div>
+        <div class="doing">
+            正在爬取中...
+        </div>
+        <div class="end">
+            <audio src="" controls></audio>
+            <button id="reset">继续爬取</button>
+        </div>
+        <br>
+        <div class="border"></div>
+        <h3>使用帮助</h3>
+        <p>以<a href="https://open.spotify.com/track/1qEmFfgcLObUfQm0j1W2CK">https://open.spotify.com/track/1qEmFfgcLObUfQm0j1W2CK</a>为例</p>
+        <ol>
+            <li>
+                打开歌曲页面，如下图得到歌曲的作者与名称
+                <img src="./sp20221122_143917_682.png" alt="" srcset="">
+            </li>
+            <li>
+                youtube 以 [作者] - [歌曲]的格式搜索如该链接 <a href="https://www.youtube.com/results?search_query=Harry+Styles+-+Late+Night+Talking">Harry Styles - Late Night Talking</a>
+                <img src="./sp20221122_144420_988.png" alt="" srcset="">
+                在搜索结果中找到,合适的歌曲如上图红框，点击进入试听确认，参考下图红框复制地址,填入当前页面youtube 输入框
+                <img src="./sp20221122_144552_024.png" alt="" srcset="">
+            </li>
+            <li>
+                spotify：输入框，填写歌曲在spotify中的歌曲地址，点击【爬取歌曲】
+                <img src="./sp20221122_153447_103.png" alt="" srcset="">
+            </li>
+            <li>
+                看到下图代表已经开始在爬取，等待片刻
+                <img src="./sp20221122_153557_830.png" alt="" srcset="">
+                若成功,界面会变成，可进行试听或者点三个小点，进行下载
+                <img src="./sp20221122_153754_788.png" alt="" srcset="">
+            </li>
+        </ol>
+    </div>
+    <script>
+        window.onload= function(){
+            const SearchParams =  new URLSearchParams(window.location.search)
+            const id = SearchParams.get('id')
+            if(id){
+                const doing = document.querySelector('.doing')
+                doing.style.display='block'
+                const loop = ()=>{
+                    fetch(`/spotify/status?id=${id}`,{
+                        method:'GET',
+                    }).then(res=>{
+                        return res.json()
+                    }).then(({status,url})=>{
+                        if(status==-1){
+                            doing.innerHTML = '爬取失败，请检查输入，重新尝试或者联系技术人员'
+                            return
+                        }
+                        if(status==1){
+                            doing.style.display='none'
+                            const end = document.querySelector('.end')
+                            end.style.display='block'
+                            end.querySelector("audio").src = url
+                            return
+                        }
+                        setTimeout(() => {
+                            loop()
+                        }, 2000);
+                    })
+                }
+                loop()
+            }else{
+                document.querySelector('.start').style.display='block'
+            }
+            document.querySelector('#button').addEventListener('click',()=>{
+                const data = {
+                    spotify:document.querySelector('#spotify').value.trim(),
+                    youtube:document.querySelector('#youtube').value.trim()
+                }
+                for(let x in data){
+                    if(!data[x]){
+                        alert(`${x} 不能为空`)
+                        return 
+                    }
+                }
+                try {
+                    const  spotifyURL =  new URL(data.spotify)
+                    if(spotifyURL.host!=='open.spotify.com'){
+                        return alert(`spotify 填写错误`)
+                    }
+                } catch (error) {
+                    return alert(`spotify 填写错误`)
+                }
+                let id
+                try {
+                    const  youtubeURL =  new URL(data.youtube)
+                    id = youtubeURL.searchParams.get('v')
+                    if(youtubeURL.host!=='www.youtube.com'||youtubeURL.pathname!=="/watch"||!id){
+                        return alert(` youtube 填写错误`) 
+                    }
+                } catch (error) {
+                    return alert(` youtube 填写错误`) 
+                }
+                fetch('/youtube/start',{
+                    method:'POST',
+                    body:JSON.stringify({
+                        id,
+                        ...data
+                    }),
+                }).then(res=>{
+                    window.location.replace(`/index.html?id=${id}`)
+                })
+            })
+            document.querySelector('#reset').addEventListener('click',()=>{
+                window.location.replace(`/index.html`)
+            })
+        }
+    </script>
+</body>
+</html>
