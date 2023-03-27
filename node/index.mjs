@@ -42,7 +42,7 @@ router.get('/spotify/start', (ctx) => {
     const {status} = has(id)
     if(status===0&&!tempMap[id]){
         tempMap[id] = true
-        execa("spotdl",['https://open.spotify.com/track/'+id,'--use-youtube','--ffmpeg','../ffmpeg-5.0-amd64-static/ffmpeg','--path-template',`./output/${id}.{ext}`]).then(result =>{
+        execa("spotdl",['https://open.spotify.com/track/'+id,'--ffmpeg','../ffmpeg-5.0-amd64-static/ffmpeg','--path-template',`./output/${id}.{ext}`]).then(result =>{
             if(result.stdout.indexOf('Done')!==-1){
                 console.log(new Date(),'成功')
             }else{
@@ -62,7 +62,7 @@ router.post('/youtube/start', (ctx) => {
     const {status} = has(id)
     if(status===0&&!tempMap[id]){
         tempMap[id] = true
-        execa("spotdl",[`${youtube}|${spotify}`,'--use-youtube','--ffmpeg','../ffmpeg-5.0-amd64-static/ffmpeg','--path-template',`./output/${id}.{ext}`]).then(result =>{
+        execa("spotdl",[`${youtube}|${spotify}`,'--ffmpeg','../ffmpeg-5.0-amd64-static/ffmpeg','--path-template',`./output/${id}.{ext}`]).then(result =>{
             if(result.stdout.indexOf('Done')!==-1){
                 console.log(new Date(),'成功')
             }else{
