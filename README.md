@@ -7,7 +7,7 @@
 ## 部署
 1. 安装 [spotDL](https://github.com/spotDL/spotify-downloader) 
 2. 解压 ffmpeg-release-amd64-static.tar.xz 在同级目录  并把最后解压文件名称改为  ffmpeg-5.0-amd64-static
-    1. XZ -d ffmpeg-4.2.2.tar.xz    tar -xvf ffmpeg-4.2.2.tar
+    1. xc -d ffmpeg-4.2.2.tar.xz 
     2. tar xvJf ffmpeg-4.2.2.tar.xz
 3. pm2.config.js 修改 DOMAIN 和 PORT
     1. PORT 服务端口

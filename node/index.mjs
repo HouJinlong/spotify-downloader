@@ -42,7 +42,7 @@ router.get('/spotify/start', (ctx) => {
     if(status===0&&!tempMap[id]){
         tempMap[id] = true
         execa("spotdl",['--ffmpeg','../ffmpeg-5.0-amd64-static/ffmpeg','--output',`./error/${id}.{output-ext}`,'download',`https://open.spotify.com/track/${id}`]).then(result =>{
-            if(result.stdout.indexOf('Done')!==-1){
+            if(fs.existsSync(`./output/${id}.mp3`)){
                 console.log(new Date(),'成功')
             }else{
                 fs.writeFileSync(`./error/${id}`,result.stdout)
