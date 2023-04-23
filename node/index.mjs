@@ -36,13 +36,12 @@ const has = (id)=>{
 let tempMap = {
 
 }
-
 router.get('/spotify/start', (ctx) => {
     const {id} = ctx.request.query
     const {status} = has(id)
     if(status===0&&!tempMap[id]){
         tempMap[id] = true
-        execa("spotdl",['https://open.spotify.com/track/'+id,'--ffmpeg','../ffmpeg-5.0-amd64-static/ffmpeg','--path-template',`./output/${id}.{ext}`]).then(result =>{
+        execa("spotdl",['--ffmpeg','../ffmpeg-5.0-amd64-static/ffmpeg','--output',`./error/${id}.{output-ext}`,'download',`https://open.spotify.com/track/${id}`]).then(result =>{
             if(result.stdout.indexOf('Done')!==-1){
                 console.log(new Date(),'成功')
             }else{
